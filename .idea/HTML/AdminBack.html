@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>News Admin</title>
+		<link href="../css/app.css" rel="stylesheet">
+		<script src="../js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="../js/canvas-particle.js"></script>
+		<style>
+			.in li {
+            color: white;
+        }
+    </style>
+		<script type="text/javascript">
+			var id;
+
+			window.onload = function() {
+				//配置
+				var config = {
+					vx: 4, //小球x轴速度,正为右，负为左
+					vy: 4, //小球y轴速度
+					height: 2, //小球高宽，其实为正方形，所以不宜太大
+					width: 2,
+					count: 250, //点个数
+					color: "121, 162, 185", //点颜色
+					stroke: "130,255,255", //线条颜色
+					dist: 6000, //点吸附距离
+					e_dist: 20000, //鼠标吸附加速距离
+					max_conn: 12 //点到点最大连接数
+				}
+
+				CanvasParticle(config);
+			}
+
+
+
+			// ----------------------------------------------------------------------------------------------------------------------------
+			$(function() {
+
+				/*
+				退出
+				 */
+				$("#loginout").click(function() {
+					$.post("/user/loginOut.do", function(respon) {
+						if (respon.status == 0) {
+							window.location.href = "Login.html";
+						}
+					})
+				});
+
+
+				var temp = $(".in").css("display", "none");
+
+				$(".news").click(function() {
+					if ($(".first").css("display") == "none") {
+						$(".first").slideDown(1000);
+					} else {
+						temp.slideUp(1000);
+					}
+				});
+				$(".type").click(function() {
+					if ($(".second").css("display") == "none") {
+						$(".second").slideDown(1000);
+					} else {
+						$(".second").slideUp(1000);
+					}
+				});
+				$(".publish").click(function() {
+					if ($(".thread").css("display") == "none") {
+						$(".thread").slideDown(1000);
+					} else {
+						$(".thread").slideUp(1000);
+					}
+				});
+				$(".info").click(function() {
+					if ($(".four").css("display") == "none") {
+						$(".four").slideDown(1000);
+					} else {
+						$(".four").slideUp(1000);
+					}
+				});
+
+
+			});
+		</script>
+		<!-- ---------------------------------------------------------------------------------------------------------------- -->
+		<style>
+			button{
+            background: none;
+            color:whitesmoke;
+            border-radius: 5px;
+        }
+        button:hover{
+            color:#fce908;
+        }
+        .mytable tr{
+
+        }
+        .resButton{
+            line-height: 30px;
+            border-radius: 10px;
+        }
+    </style>
+
+
+	</head>
+	<body style="background-color: black;" id="mydiv">
+		<div id="app">
+			<div data-reactroot="" class="wrapper">
+				<nav class="navbar navbar-default navbar-static-top" role="navigation">
+					<div>
+						<div class="navbar-header">
+							<a class="navbar-brand" href="index.html">Index</a></div>
+
+						<ul class="nav navbar-top-links navbar-right">
+							<li class="dropDown"><span id="welcome" style="margin-right: 300px;">系统时间：</span></li>
+							<li class="dropDown"><span id="welcome" style="margin-right: 100px;">欢迎：</span></li>
+							<li class="dropDown"><a class="btn-logout" id="loginout">退出</a></li>
+						</ul>
+					</div>
+					<div class="navbar-default sidebar" role="navigation">
+						<div class="sidebar-nav navbar-collapse">
+							<ul class="nav" id="side-menu">
+								<li><a><span style="margin-left: 50px;color: yellow;font-size: 20px;">菜单栏</span></a></li>
+								<li><a><i class="fa fa-bar-chart-o fa-fw"></i><span class="news">新闻管理</span></a>
+									<ul class="nav nav-second-level collapse in first">
+										<li><a>审核新闻</a></li>
+										<li><a>删除新闻</a></li>
+										<li><a>置顶新闻</a></li>
+									</ul>
+								</li>
+								<li><a><i class="fa fa-wrench fa-fw"></i><span class="type">分类管理</span></a>
+									<ul class="nav nav-second-level collapse in admin second">
+										<li><a>删除分类</a></li>
+										<li><a>添加分类</a></li>
+										<li><a>修改分类</a></li>
+									</ul>
+								</li>
+								<li><a><i class="fa fa-wrench fa-fw"></i><span class="publish">公告管理</span></a>
+									<ul class="nav nav-second-level collapse in admin thread">
+										<li><a>删除公告</a></li>
+										<li><a>添加公告</a></li>
+										<li><a>修改公告</a></li>
+									</ul>
+								</li>
+								<li><a><i class="fa fa-wrench fa-fw"></i><span class="info">个人信息管理</span></a>
+									<ul class="nav nav-second-level collapse in admin four">
+										<li><a>查看信息</a></li>
+										<li><a>修改信息</a></li>
+
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+				<div id="page-wrapper">
+					<div class="row">
+						<div class="col-lg-12">
+							<h1 class="page-header" style="float: left;">View</h1>
+							<input type="text" placeholder="关键字搜索" style="margin-left: 400px;margin-top: 15px;BACKGROUND-COLOR: transparent;width: 300px;border-color: powderblue;" />
+							<button>搜索</button>
+							<hr>
+						</div>
+					</div>
+					<div class="contin">
+						<div id="wel">
+							<h1 align='center' style='line-height: 450px;color: white;font-size: 50px'>WELCOME BACK</h1>
+						</div>
+						<table class="mytable" width="100%" border="1px" style="border-color: #fff;color: #00fff5;font-family: 新宋体;font-size: 16px;"
+						 cellspacing="1" cellpadding="10">
+
+						</table>
+
+						<!--放置页码-->
+						<div style="float: left;margin-top: 50px;margin-left: 100px" id="assessR">
+							<p id="sumPage" class="page"></p>
+							<p id="lastPage" class="page res"></p>
+							<p id="nestPage" class="page res"></p>
+
+						</div>
+
+						<style>
+							.page {
+								width: 150px;
+								float: left;
+								margin-left: 100px;
+								color: white;
+							}
+
+							.res:hover {
+								color: #d6ff00;
+								font-size: 150%;
+							}
+						</style>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div id=""></div>
+
+	</body>
+
+</html>
