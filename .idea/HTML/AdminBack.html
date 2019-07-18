@@ -34,7 +34,20 @@
 
 
         // ----------------------------------------------------------------------------------------------------------------------------
+        window.setInterval("GetTime()", 1000);
+
+        function GetTime() {
+            var myDate = new Date();
+            //系统时间
+            $("#time").html("当前系统时间：" +
+                myDate.toLocaleDateString() + " " + myDate.toLocaleTimeString());
+        }
+
         $(function () {
+
+
+
+
 
             /*
             退出
@@ -83,24 +96,189 @@
             //	----------------------功能-----------------------------------------
 
 
-
         });
 
         //添加节点显示
-        function addtype() {
+        function addCategory() {
+            //清空
+            $("#wel").html("");
+            $(".mytable").html("");
+            $(".page").html("");
+
             $("#wel").html("<h2 align='center' style='margin-top: 50px'>添加分类</h2>" +
                 "<input type='text' id='kinds' style='margin-left: 530px;margin-top:50px;border-radius: 10px;color: black'>" +
                 "<button style='margin-left: 580px;margin-top:50px' onclick='addKinds()'>完成</button>");
         }
+
         function addKinds() {
-             var kinds=$("#kinds").val()
-             $.get("http://localhost:8888/category/addType.do",{kinds:kinds},function (result) {
-                 if(result.status == 0){
-                     alert("插入节点成功！");
-                     $("#wel").html("<h1 align='center' style='line-height: 450px';color:' white';font-size: '50px''>WELCOME BACK</h1>");
-                 }
-             });
+            var kinds = $("#kinds").val()
+            $.get("http://localhost:8888/category/addType.do", {kinds: kinds}, function (result) {
+                if (result.status == 0) {
+                    alert("插入节点成功！");
+                    $("#wel").html("<h1 align='center' style='line-height: 450px';color:' white';font-size: '50px''>WELCOME BACK</h1>");
+                }
+            });
         }
+
+        //定义页数
+        var sumPage;
+        var currentPage = 1;
+
+
+        // 得到所有节点
+        var temp = 1;
+
+        function showCategory() {
+            $.get("http://localhost:8888/category/getAllType.do", {pageNum: currentPage}, function (result) {
+                if (result.status == 0) {
+                    var arr = result.data.list;
+                    //清空div
+                    $("#wel").html("");
+                    $(".mytable").html("");
+                    //分页
+                    sumPage = result.data.pages;
+                    currentPage = result.data.pageNum;
+
+                    //设置总页数
+                    $("#sumPage").html("总页数:" + +sumPage + "当前第<i style='color: hotpink'>" + "  " + currentPage + "  " + "</i>页");
+                    $("#nestPage").html("<i onclick='nextpage1()'>下一页</i>");
+                    $("#lastPage").html("<i onclick='lastpage1()'>上一页</i>");
+
+
+                    for (var i = 0; i < arr.length; i++) {
+                        // alert(list[i].kinds)
+
+                        $(".mytable").append("<tr style='height: 50px;'>" +
+                            "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
+                            "<td  style='width: 50px;'> <button class='butt'  onclick='del(this)'>删除</button></td>" +
+                            "</tr>")
+                    }
+
+
+                }
+            });
+        }
+
+        //删除节点
+        function del(id) {
+            var kinds = id.parentNode.parentNode.childNodes[0].innerHTML;
+            // alert(kinds)
+            $.get("http://localhost:8888/category/deleteType.do", {kinds: kinds}, function (result) {
+                if (result.status == 0) {
+                    alert("删除成功");
+                    //刷新
+                    showCategory();
+                }
+            });
+
+        }
+
+        //    下一页
+        function nextpage1() {
+            // alert(currentPage)
+            if (currentPage < sumPage) {
+                // alert(2222)
+                currentPage++;
+                showCategory();
+            }
+        }
+
+        //上一页
+        function lastpage1() {
+
+            if (currentPage > 1) {
+                currentPage--;
+                showCategory();
+            }
+        }
+
+        var sumPage2;
+        var currentPage2 = 1;
+
+        //修改节点展示
+        function updataCategory() {
+            $.get("http://localhost:8888/category/getAllType.do", {pageNum: currentPage2}, function (result) {
+                if (result.status == 0) {
+                    var arr = result.data.list;
+                    //清空div
+                    $("#wel").html("");
+                    $(".mytable").html("");
+                    //分页
+                    sumPage2 = result.data.pages;
+                    currentPage2 = result.data.pageNum;
+
+                    //设置总页数
+                    $("#sumPage").html("总页数:" + +sumPage2 + "当前第<i style='color: hotpink'>" + "  " + currentPage2 + "  " + "</i>页");
+                    $("#nestPage").html("<i onclick='nextpage2()'>下一页</i>");
+                    $("#lastPage").html("<i onclick='lastpage2()'>上一页</i>");
+                    for (var i = 0; i < arr.length; i++) {
+                        // alert(list[i].kinds)
+
+                        $(".mytable").append("<tr style='height: 50px;'>" +
+                            "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
+                            "<td  style='width: 50px;'>" +
+                            " <button class='butt' onclick='updateType(this)'>修改</button>" +
+                            "</td>" +
+                            "</tr>")
+                    }
+
+
+                }
+            });
+        }
+
+        //    下一页
+        function nextpage2() {
+            if (currentPage2 < sumPage2) {
+                currentPage2++;
+                updataCategory();
+            }
+        }
+
+        //上一页
+        function lastpage2() {
+
+            if (currentPage2 > 1) {
+                currentPage2--;
+                updataCategory();
+            }
+        }
+
+        //    修改操作
+        var flag = true;
+        var oldkinds;
+
+        function updateType(id) {
+            if (flag) {
+                //修改
+                oldkinds = $(id).parent().parent().children().first().html();
+                // alert(oldkinds);
+                $(id).parent().parent().children().first().html("<input class='newkinds' type='text' style='color: white;BACKGROUND-COLOR: transparent;border-radius: 10px;'/>")
+                $(id).html("完成");
+                //修改标记
+                flag = false;
+            } else {
+                //发起请求
+                var newkinds = $(".newkinds").val();
+                // alert(newkinds);
+                $.get("http://localhost:8888/category/updateType.do", {
+                    oldkinds: oldkinds,
+                    newkinds: newkinds
+                }, function (result) {
+                    if (result.status == 0) {
+                        alert("修改成功");
+                        updataCategory();
+                    }
+
+                })
+
+
+            }
+
+
+        }
+
+
     </script>
     <!-- ---------------------------------------------------------------------------------------------------------------- -->
     <style>
@@ -135,8 +313,8 @@
                     <a class="navbar-brand" href="index.html">Index</a></div>
 
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropDown"><span id="welcome" style="margin-right: 300px;">系统时间：</span></li>
-                    <li class="dropDown"><span id="welcome" style="margin-right: 100px;">欢迎：</span></li>
+                    <li class="dropDown"><span id="time" style="margin-right: 300px;color: greenyellow;font-size: 16px"></span></li>
+                    <li class="dropDown"><span id="welcome" style="margin-right: 100px;">欢迎:</span></li>
                     <li class="dropDown"><a class="btn-logout" id="loginout">退出</a></li>
                 </ul>
             </div>
@@ -153,9 +331,9 @@
                         </li>
                         <li><a><i class="fa fa-wrench fa-fw"></i><span class="type">分类管理</span></a>
                             <ul class="nav nav-second-level collapse in admin second">
-                                <li><a>删除分类</a></li>
-                                <li><a onclick="addtype()">添加分类</a></li>
-                                <li><a>修改分类</a></li>
+                                <li><a onclick="showCategory()">删除分类</a></li>
+                                <li><a onclick="addCategory()">添加分类</a></li>
+                                <li><a onclick="updataCategory()">修改分类</a></li>
                             </ul>
                         </li>
                         <li><a><i class="fa fa-wrench fa-fw"></i><span class="publish">公告管理</span></a>
@@ -194,7 +372,7 @@
 
                 </div>
 
-                <table class="mytable" width="100%" border="1px"
+                <table class="mytable" border="1px"
                        style="border-color: #fff;color: #00fff5;font-family: 新宋体;font-size: 16px;"
                        cellspacing="1" cellpadding="10">
 
