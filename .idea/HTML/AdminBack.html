@@ -113,7 +113,7 @@
         function addKinds() {
             var kinds = $("#kinds").val()
             $.get("http://localhost:8888/category/addType.do", {kinds: kinds}, function (result) {
-                if (result.status == 0) {
+                    if (result.status == 0) {
                     alert("插入节点成功！");
                     $("#wel").html("<h1 align='center' style='line-height: 450px';color:' white';font-size: '50px''>WELCOME BACK</h1>");
                 }
@@ -140,7 +140,7 @@
                     currentPage = result.data.pageNum;
 
                     //设置总页数
-                    $("#sumPage").html("总页数:" + +sumPage + "当前第<i style='color: hotpink'>" + "  " + currentPage + "  " + "</i>页");
+                    $("#sumPage").html("总页数:" + +sumPage + "当前第<i style='color: red'>" + "  " + currentPage + "  " + "</i>页");
                     $("#nestPage").html("<i onclick='nextpage1()'>下一页</i>");
                     $("#lastPage").html("<i onclick='lastpage1()'>上一页</i>");
 
@@ -148,7 +148,8 @@
                     for (var i = 0; i < arr.length; i++) {
                         // alert(list[i].kinds)
 
-                        $(".mytable").append("<tr style='height: 50px;'>" +
+                        $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                            "<td   style='width: 100px' align='center'>" + arr[i].typeId + "</td>" +
                             "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
                             "<td  style='width: 50px;'> <button class='butt'  onclick='del(this)'>删除</button></td>" +
                             "</tr>")
@@ -161,7 +162,7 @@
 
         //删除节点
         function del(id) {
-            var kinds = id.parentNode.parentNode.childNodes[0].innerHTML;
+            var kinds = id.parentNode.parentNode.childNodes[1].innerHTML;
             // alert(kinds)
             $.get("http://localhost:8888/category/deleteType.do", {kinds: kinds}, function (result) {
                 if (result.status == 0) {
@@ -208,14 +209,15 @@
                     currentPage2 = result.data.pageNum;
 
                     //设置总页数
-                    $("#sumPage").html("总页数:" + +sumPage2 + "当前第<i style='color: hotpink'>" + "  " + currentPage2 + "  " + "</i>页");
+                    $("#sumPage").html("总页数:" + +sumPage2 + "当前第<i style='color: red'>" + "  " + currentPage2 + "  " + "</i>页");
                     $("#nestPage").html("<i onclick='nextpage2()'>下一页</i>");
                     $("#lastPage").html("<i onclick='lastpage2()'>上一页</i>");
                     for (var i = 0; i < arr.length; i++) {
                         // alert(list[i].kinds)
 
-                        $(".mytable").append("<tr style='height: 50px;'>" +
-                            "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
+                        $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                            "<td   style='width: 100px;color: hotpinkr' align='center'>" + arr[i].typeId + "</td>" +
+                            "<td class='second'  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
                             "<td  style='width: 50px;'>" +
                             " <button class='butt' onclick='updateType(this)'>修改</button>" +
                             "</td>" +
@@ -250,10 +252,13 @@
 
         function updateType(id) {
             if (flag) {
-                //修改
-                oldkinds = $(id).parent().parent().children().first().html();
-                // alert(oldkinds);
-                $(id).parent().parent().children().first().html("<input class='newkinds' type='text' style='color: white;BACKGROUND-COLOR: transparent;border-radius: 10px;'/>")
+                //修改,父类的父类，find()查找     children
+                oldkinds = $(id).parent().parent().find(".second").html();
+                // $(id).children.firstChild
+                // alert(oldkinds)
+
+                $(id).parent().parent().find(".second").html("<input class='newkinds' type='text' style='color: white;" +
+                    "BACKGROUND-COLOR: transparent;border-radius: 10px;'/>")
                 $(id).html("完成");
                 //修改标记
                 flag = false;
@@ -274,14 +279,169 @@
 
 
             }
-
-
         }
+
+//yl++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        var pageNumll = 0;
+
+
+        function aduitNews() {
+            showCategoryll();
+        }
+
+        function showCategoryll() {
+            // //清空div
+            $("#wel").html("");
+            $(".mytable").html("");
+            $(".page").html("");
+
+            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum="+pageNumll,  function (resultll) {
+                var arrll = resultll.data;
+
+                // $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                // "<td   style='width: 100px' align='center'>" + arr[i].typeId + "</td>" +
+                // "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
+                // "<td  style='width: 50px;'> <button class='butt'  onclick='del(this)'>删除</button></td>" +
+                // "</tr>")
+
+                $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                    "<td  class='ll_td'>序号</td>" +
+                    "<td  class='ll_td'>标题</td>" +
+                    "<td  class='ll_td'> 作者</td>"+
+
+                    "<td  class='ll_td'>时间</td>"+
+                    "<td  class='ll_td'>状态</td>"+
+                    "<td  class='ll_td'>操作</td>"+
+
+                    "</tr>")
+                for (var i = 0; i < arrll.length; i++) {
+
+                    $(".mytable").append("<tr >" +
+                        "<td  class='ll_td'>" + arrll[i].newsId + "</td>" +
+                        "<td  class='ll_td'> "+arrll[i].title+"</td>" +
+                        "<td  class='ll_td'> "+arrll[i].author+"</td>"+
+
+                        "<td  class='ll_td'>"+ arrll[i].publishTime+"</td>"+
+                        "<td  class='ll_td'>"+ (arrll[i].statusId=='3'?'需要审核':'已审核') + "</td>>" +
+                        "<td  class='ll_td up' style='color: lightgoldenrodyellow;' onclick='shenghe(this)'>审核</td>"+
+                        "</tr>")
+                }
+                $(".mytable").append("<tr ><td  colspan='3' class='ll_td'><span onclick='ll_top()'>上一页</span></td>" +
+                    "<td colspan='3' class='ll_td'><span onclick='ll_botton()'>下一页</span></td>");
+
+            });
+        }
+
+
+
+        function ll_botton() {
+            pageNumll = pageNumll+10;
+            showCategoryll();
+        }
+
+        function  ll_top() {
+            if(pageNumll>=10){
+                pageNumll = pageNumll-10;
+                showCategoryll();
+            }
+        }
+
+        //审核
+        function shenghe(sh) {
+            var newsId = $(sh).parent().children().first().html();
+
+            $.get("http://127.0.0.1:8888/NewsMange/isSuccess.do?newsId="+newsId+"&sduts=1",  function (resultll) {});
+            showCategoryll();
+        }
+
+        //删除
+        var pageNumll2 = 0;
+
+
+        function ll_delNews() {
+            showCategoryll2();
+        }
+
+        function showCategoryll2() {
+            // //清空div
+            $("#wel").html("");
+            $(".mytable").html("");
+
+            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum="+pageNumll2,  function (resultll) {
+                var arrll = resultll.data;
+
+                $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                    "<td  class='ll_td'>序号</td>" +
+                    "<td  class='ll_td'>标题</td>" +
+                    "<td  class='ll_td'> 作者</td>"+
+
+                    "<td  class='ll_td'>时间</td>"+
+
+                    "<td  class='ll_td'>操作</td>"+
+
+                    "</tr>")
+                for (var i = 0; i < arrll.length; i++) {
+
+                    $(".mytable").append("<tr >" +
+                        "<td  class='ll_td'>" + arrll[i].newsId + "</td>" +
+                        "<td  class='ll_td'> "+arrll[i].title+"</td>" +
+                        "<td  class='ll_td'> "+arrll[i].author+"</td>"+
+
+                        "<td  class='ll_td'>"+ arrll[i].publishTime+"</td>"+
+                        "<td  class='ll_td upcolor' style='color: white;' onclick='ll_del(this)'>删除</td>"+
+                        "</tr>")
+                }
+                $(".mytable").append("<tr ><td  colspan='3' class='ll_td'><span onclick='ll_top2()'>上一页</span></td>" +
+                    "<td colspan='2' class='ll_td'><span onclick='ll_botton2()'>下一页</span></td>");
+
+            });
+        }
+
+
+
+        function ll_botton2() {
+            pageNumll2 = pageNumll2+10;
+            showCategoryll2();
+        }
+
+        function  ll_top2() {
+            if(pageNumll2>=10){
+                pageNumll2 = pageNumll2-10;
+                showCategoryll2();
+            }
+        }
+
+        //删除
+        function ll_del(sh) {
+            var newsId = $(sh).parent().children().first().html();
+
+            $.get("http://127.0.0.1:8888/NewsMange/Delete.do?newsId="+newsId,  function (resultll) {});
+            showCategoryll2();
+        }
+
 
 
     </script>
     <!-- ---------------------------------------------------------------------------------------------------------------- -->
     <style>
+        a,span,li{
+            cursor: pointer;
+        }
+        .upcolor:hover{
+            color: hotpink;
+        }
+        .page{
+            cursor: pointer;
+        }
+        .ll_td{
+            width: 150px;
+            align:center;
+            cursor: pointer;
+        }
+        a{
+            text-decoration: none;
+        }
         button {
             background: none;
             color: whitesmoke;
@@ -313,7 +473,9 @@
                     <a class="navbar-brand" href="index.html">Index</a></div>
 
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropDown"><span id="time" style="margin-right: 300px;color: greenyellow;font-size: 16px"></span></li>
+                    <li class="dropDown"><span id="time"
+                                               style="margin-right: 300px;color: greenyellow;font-size: 16px"></span>
+                    </li>
                     <li class="dropDown"><span id="welcome" style="margin-right: 100px;">欢迎:</span></li>
                     <li class="dropDown"><a class="btn-logout" id="loginout">退出</a></li>
                 </ul>
@@ -324,8 +486,8 @@
                         <li><a><span style="margin-left: 50px;color: yellow;font-size: 20px;">菜单栏</span></a></li>
                         <li><a><i class="fa fa-bar-chart-o fa-fw"></i><span class="news">新闻管理</span></a>
                             <ul class="nav nav-second-level collapse in first">
-                                <li><a>审核新闻</a></li>
-                                <li><a>删除新闻</a></li>
+                                <li><a onclick="aduitNews()">审核新闻</a></li>
+                                <li><a onclick="ll_delNews()">删除新闻</a></li>
                                 <li><a>置顶新闻</a></li>
                             </ul>
                         </li>
@@ -359,12 +521,13 @@
                 <div class="col-lg-12">
                     <h1 class="page-header" style="float: left;">View</h1>
                     <input type="text" placeholder="关键字搜索"
-                           style="margin-left: 400px;margin-top: 15px;BACKGROUND-COLOR: transparent;width: 300px;border-color: powderblue;"/>
+                           style="margin-left: 400px;margin-top: 15px;BACKGROUND-COLOR: transparent;width: 300px;border-color: powderblue;border-radius: 5px"/>
                     <button>搜索</button>
                     <hr>
                 </div>
             </div>
             <div class="contin">
+
                 <div id="wel">
                     <!--内容放置-->
                     <h1 align='center' style='line-height: 450px;color: white;font-size: 50px'>WELCOME BACK</h1>
@@ -372,9 +535,12 @@
 
                 </div>
 
-                <table class="mytable" border="1px"
-                       style="border-color: #fff;color: #00fff5;font-family: 新宋体;font-size: 16px;"
+
+                <!--表单-->
+                <table class="mytable"
+                       style="color: white;font-family: 新宋体;font-size: 16px;margin-left:150px"
                        cellspacing="1" cellpadding="10">
+
 
                 </table>
 
