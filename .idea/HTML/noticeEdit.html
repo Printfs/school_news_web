@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Notice Pushlish</title>
+</head>
+
+<body>
+<form  method="get">
+
+    <p><span >您的公告标题:</span><input type="text" id="temp" name="title" style="width: 300px;border-radius: 5px"/></p>
+
+    <!-- 加载编辑器的容器 -->
+    <script id="container" name="text" type="text/plain">
+            这里写你的公告内容
+    </script>
+    <input type="button" value="提交" onclick="sub()">
+</form>
+<!-- 配置文件 -->
+<script type="text/javascript" src="../ueditor/utf8-jsp/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="../ueditor/utf8-jsp/ueditor.all.js"></script>
+<script src="../js/jquery-3.3.1.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+    ue.ready(function () {
+        ue.setHeight(500);
+    });
+
+
+    function sub() {
+
+         $.get("http://localhost:8888/notice/publish.do",$("form").serialize(),function (data) {
+             if (data.status == 0){
+                 alert("发布公告成功...即将返回主页");
+                 window.location.href="AdminBack.html";
+             }else {
+                 alert("发布公告失败...");
+                 window.location.href="AdminBack.html";
+             }
+
+         })
+
+    }
+</script>
+</body>
+
+</html>

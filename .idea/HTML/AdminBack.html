@@ -113,7 +113,7 @@
         function addKinds() {
             var kinds = $("#kinds").val()
             $.get("http://localhost:8888/category/addType.do", {kinds: kinds}, function (result) {
-                    if (result.status == 0) {
+                if (result.status == 0) {
                     alert("插入节点成功！");
                     $("#wel").html("<h1 align='center' style='line-height: 450px';color:' white';font-size: '50px''>WELCOME BACK</h1>");
                 }
@@ -139,8 +139,16 @@
                     sumPage = result.data.pages;
                     currentPage = result.data.pageNum;
 
+
+                    $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+
+                        "<td   style='width: 200px;color: gold' align='center'>节点</td>" +
+                        "<td   style='width: 200px;color: gold' align='center'>分类</td>" +
+                        "<td  style='width: 50px;color: gold'>操作</td>" +
+                        "</tr>")
+
                     //设置总页数
-                    $("#sumPage").html("总页数:" + +sumPage + "当前第<i style='color: red'>" + "  " + currentPage + "  " + "</i>页");
+                    $("#sumPage").html("总页数:" + +sumPage + "当前第<i style='color: yellow'>" + "  " + currentPage + "  " + "</i>页");
                     $("#nestPage").html("<i onclick='nextpage1()'>下一页</i>");
                     $("#lastPage").html("<i onclick='lastpage1()'>上一页</i>");
 
@@ -208,8 +216,15 @@
                     sumPage2 = result.data.pages;
                     currentPage2 = result.data.pageNum;
 
+                    $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+
+                        "<td   style='width: 200px;color: gold' align='center'>节点</td>" +
+                        "<td   style='width: 200px;color: gold' align='center'>分类</td>" +
+                        "<td  style='width: 50px;color: gold'>操作</td>" +
+                        "</tr>")
+
                     //设置总页数
-                    $("#sumPage").html("总页数:" + +sumPage2 + "当前第<i style='color: red'>" + "  " + currentPage2 + "  " + "</i>页");
+                    $("#sumPage").html("总页数:" + +sumPage2 + "当前第<i style='color: yellow'>" + "  " + currentPage2 + "  " + "</i>页");
                     $("#nestPage").html("<i onclick='nextpage2()'>下一页</i>");
                     $("#lastPage").html("<i onclick='lastpage2()'>上一页</i>");
                     for (var i = 0; i < arr.length; i++) {
@@ -217,7 +232,7 @@
 
                         $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
                             "<td   style='width: 100px;color: hotpinkr' align='center'>" + arr[i].typeId + "</td>" +
-                            "<td class='second'  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
+                            "<td class='te'  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
                             "<td  style='width: 50px;'>" +
                             " <button class='butt' onclick='updateType(this)'>修改</button>" +
                             "</td>" +
@@ -253,11 +268,10 @@
         function updateType(id) {
             if (flag) {
                 //修改,父类的父类，find()查找     children
-                oldkinds = $(id).parent().parent().find(".second").html();
-                // $(id).children.firstChild
-                // alert(oldkinds)
+                oldkinds = $(id).parent().parent().find(".te").html();
 
-                $(id).parent().parent().find(".second").html("<input class='newkinds' type='text' style='color: white;" +
+
+                $(id).parent().parent().find(".te").html("<input class='newkinds' type='text' style='color: white;" +
                     "BACKGROUND-COLOR: transparent;border-radius: 10px;'/>")
                 $(id).html("完成");
                 //修改标记
@@ -281,7 +295,7 @@
             }
         }
 
-//yl++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //yl++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         var pageNumll = 0;
 
@@ -296,53 +310,47 @@
             $(".mytable").html("");
             $(".page").html("");
 
-            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum="+pageNumll,  function (resultll) {
+            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum=" + pageNumll, function (resultll) {
                 var arrll = resultll.data;
 
-                // $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
-                // "<td   style='width: 100px' align='center'>" + arr[i].typeId + "</td>" +
-                // "<td  style='width: 600px' align='center'>" + arr[i].kinds + "</td>" +
-                // "<td  style='width: 50px;'> <button class='butt'  onclick='del(this)'>删除</button></td>" +
-                // "</tr>")
 
                 $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
-                    "<td  class='ll_td'>序号</td>" +
-                    "<td  class='ll_td'>标题</td>" +
-                    "<td  class='ll_td'> 作者</td>"+
+                    "<td  class='ll_td ss' >序号</td>" +
+                    "<td  class='ll_td ss'>标题</td>" +
+                    "<td  class='ll_td ss'> 作者</td>" +
 
-                    "<td  class='ll_td'>时间</td>"+
-                    "<td  class='ll_td'>状态</td>"+
-                    "<td  class='ll_td'>操作</td>"+
+                    "<td  class='ll_td ss'>时间</td>" +
+                    "<td  class='ll_td ss'>状态</td>" +
+                    "<td  class='ll_td ss'>操作</td>" +
 
                     "</tr>")
                 for (var i = 0; i < arrll.length; i++) {
 
-                    $(".mytable").append("<tr >" +
+                    $(".mytable").append("<tr style='height: 40px;'>" +
                         "<td  class='ll_td'>" + arrll[i].newsId + "</td>" +
-                        "<td  class='ll_td'> "+arrll[i].title+"</td>" +
-                        "<td  class='ll_td'> "+arrll[i].author+"</td>"+
+                        "<td  class='ll_td'> " + arrll[i].title + "</td>" +
+                        "<td  class='ll_td'> " + arrll[i].author + "</td>" +
 
-                        "<td  class='ll_td'>"+ arrll[i].publishTime+"</td>"+
-                        "<td  class='ll_td'>"+ (arrll[i].statusId=='3'?'需要审核':'已审核') + "</td>>" +
-                        "<td  class='ll_td up' style='color: lightgoldenrodyellow;' onclick='shenghe(this)'>审核</td>"+
+                        "<td  class='ll_td'>" + arrll[i].publishTime + "</td>" +
+                        "<td  class='ll_td'>" + (arrll[i].statusId == '3' ? '需要审核' : '已审核') + "</td>>" +
+                        "<td  class='ll_td up upcolor' style='color: lightgoldenrodyellow;' onclick='shenghe(this)'>审核</td>" +
                         "</tr>")
                 }
-                $(".mytable").append("<tr ><td  colspan='3' class='ll_td'><span onclick='ll_top()'>上一页</span></td>" +
-                    "<td colspan='3' class='ll_td'><span onclick='ll_botton()'>下一页</span></td>");
+                $(".mytable").append("<tr ><td  colspan='3' class='ll_td nn'><span onclick='ll_top()'>上一页</span></td>" +
+                    "<td colspan='3' class='ll_td nn'><span onclick='ll_botton()'>下一页</span></td>");
 
             });
         }
 
 
-
         function ll_botton() {
-            pageNumll = pageNumll+10;
+            pageNumll = pageNumll + 10;
             showCategoryll();
         }
 
-        function  ll_top() {
-            if(pageNumll>=10){
-                pageNumll = pageNumll-10;
+        function ll_top() {
+            if (pageNumll >= 10) {
+                pageNumll = pageNumll - 10;
                 showCategoryll();
             }
         }
@@ -351,7 +359,8 @@
         function shenghe(sh) {
             var newsId = $(sh).parent().children().first().html();
 
-            $.get("http://127.0.0.1:8888/NewsMange/isSuccess.do?newsId="+newsId+"&sduts=1",  function (resultll) {});
+            $.get("http://127.0.0.1:8888/NewsMange/isSuccess.do?newsId=" + newsId + "&sduts=1", function (resultll) {
+            });
             showCategoryll();
         }
 
@@ -368,46 +377,45 @@
             $("#wel").html("");
             $(".mytable").html("");
 
-            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum="+pageNumll2,  function (resultll) {
+            $.get("http://127.0.0.1:8888/NewsMange/all.do?pageNum=" + pageNumll2, function (resultll) {
                 var arrll = resultll.data;
 
                 $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
-                    "<td  class='ll_td'>序号</td>" +
-                    "<td  class='ll_td'>标题</td>" +
-                    "<td  class='ll_td'> 作者</td>"+
+                    "<td  class='ll_td ss'>序号</td>" +
+                    "<td  class='ll_td ss'>标题</td>" +
+                    "<td  class='ll_td ss'> 作者</td>" +
 
-                    "<td  class='ll_td'>时间</td>"+
+                    "<td  class='ll_td ss'>时间</td>" +
 
-                    "<td  class='ll_td'>操作</td>"+
+                    "<td  class='ll_td ss'>操作</td>" +
 
                     "</tr>")
                 for (var i = 0; i < arrll.length; i++) {
 
-                    $(".mytable").append("<tr >" +
+                    $(".mytable").append("<tr style='height: 40px;'>" +
                         "<td  class='ll_td'>" + arrll[i].newsId + "</td>" +
-                        "<td  class='ll_td'> "+arrll[i].title+"</td>" +
-                        "<td  class='ll_td'> "+arrll[i].author+"</td>"+
+                        "<td  class='ll_td'> " + arrll[i].title + "</td>" +
+                        "<td  class='ll_td'> " + arrll[i].author + "</td>" +
 
-                        "<td  class='ll_td'>"+ arrll[i].publishTime+"</td>"+
-                        "<td  class='ll_td upcolor' style='color: white;' onclick='ll_del(this)'>删除</td>"+
+                        "<td  class='ll_td'>" + arrll[i].publishTime + "</td>" +
+                        "<td  class='ll_td upcolor'  onclick='ll_del(this)'>删除</td>" +
                         "</tr>")
                 }
-                $(".mytable").append("<tr ><td  colspan='3' class='ll_td'><span onclick='ll_top2()'>上一页</span></td>" +
-                    "<td colspan='2' class='ll_td'><span onclick='ll_botton2()'>下一页</span></td>");
+                $(".mytable").append("<tr ><td  colspan='3' class='ll_td nn'><span onclick='ll_top2()'>上一页</span></td>" +
+                    "<td colspan='2' class='ll_td nn'><span onclick='ll_botton2()'>下一页</span></td>");
 
             });
         }
 
 
-
         function ll_botton2() {
-            pageNumll2 = pageNumll2+10;
+            pageNumll2 = pageNumll2 + 10;
             showCategoryll2();
         }
 
-        function  ll_top2() {
-            if(pageNumll2>=10){
-                pageNumll2 = pageNumll2-10;
+        function ll_top2() {
+            if (pageNumll2 >= 10) {
+                pageNumll2 = pageNumll2 - 10;
                 showCategoryll2();
             }
         }
@@ -416,32 +424,131 @@
         function ll_del(sh) {
             var newsId = $(sh).parent().children().first().html();
 
-            $.get("http://127.0.0.1:8888/NewsMange/Delete.do?newsId="+newsId,  function (resultll) {});
+            $.get("http://127.0.0.1:8888/NewsMange/Delete.do?newsId=" + newsId, function (resultll) {
+            });
             showCategoryll2();
         }
 
+        //---------------------------------------航  ---------------------
+
+
+        var sumPageNotice;
+        var currentPageNotice = 1;
+
+        //删除公告，必须先查公告
+        function deleteNotice() {
+
+            $.get("http://127.0.0.1:8888/notice/getAll.do", {pageNum: currentPageNotice}, function (data) {
+                if (data.status == 0) {
+                    var arr = data.data.list;
+
+                    // alert(arr[0].title)
+
+
+                    //总页数
+                    sumPageNotice = data.data.pages;
+                    // nextPageNotice=data.data.pageNum;
+
+
+                    //清空div
+                    $("#wel").html("");
+                    $(".mytable").html("");
+
+
+                    $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                        "<td   style='width: 50px;color: gold' align='center'>公告顺序</td>" +
+                        "<td   style='width: 250px;color: gold' align='center'>公告标题</td>" +
+                        "<td   style='width: 200px;color: gold' align='center'> 发表日期</td>" +
+                        "<td   style='width: 200px;color: gold' align='center'>发表单位</td>" +
+                        "<td  style='width: 50px;color: gold'>操作</td>" +
+                        "</tr>")
+
+
+                    //分页
+                    $("#sumPage").html("总页数:" + '' + sumPageNotice + '' + "当前第<i style='color: yellow'>" + "  " + currentPageNotice + "  " + "</i>页");
+                    $("#nestPage").html("<i onclick='nextPageNotice()'>下一页</i>");
+                    $("#lastPage").html("<i onclick='lastPageNotice()'>上一页</i>");
+
+
+                    for (var i = 0; i < arr.length; i++) {
+
+                        $(".mytable").append("<tr style='height: 50px;border-bottom:white solid 1px'>" +
+                            "<td   style='width: 50px' align='center'>" + arr[i].noticeId + "</td>" +
+                            "<td   style='width: 250px' align='center'>" + arr[i].title + "</td>" +
+                            "<td   style='width: 200px' align='center'>" + arr[i].publishTime + "</td>" +
+                            "<td   style='width: 200px' align='center'>" + arr[i].publisher + "</td>" +
+                            "<td  style='width: 50px;'>" +
+                            " <button class='butt' onclick='delnotice(this)'>删除</button>" +
+                            "</td>" +
+                            "</tr>")
+                    }
+                }
+            });
+
+        }
+
+        //下一页
+        function nextPageNotice() {
+            if (currentPageNotice < sumPageNotice) {
+                currentPageNotice++;
+                deleteNotice();
+            }
+        }
+
+        function lastPageNotice() {
+            if (currentPageNotice > 1) {
+                currentPageNotice--;
+                deleteNotice();
+            }
+        }
+
+        //删除节点
+        function delnotice(id) {
+             var noticeId=$(id).parent().parent().children().first().html();
+             alert(noticeId)
+            $.get("http://127.0.0.1:8888/notice/delete.do",{noticeId:noticeId},function (result) {
+                if (result.status == 0){
+                    deleteNotice();
+                }
+            })
+        }
 
 
     </script>
     <!-- ---------------------------------------------------------------------------------------------------------------- -->
     <style>
-        a,span,li{
+
+
+
+        a, span, li {
             cursor: pointer;
         }
-        .upcolor:hover{
-            color: hotpink;
+
+        .upcolor:hover {
+            color: goldenrod;
+            font-size: 140%;
         }
-        .page{
+        .nn:hover{
+            color: goldenrod;
+            font-size: 140%;
+        }
+        .page {
             cursor: pointer;
         }
-        .ll_td{
+
+        .ll_td {
             width: 150px;
-            align:center;
+            align: center;
             cursor: pointer;
         }
-        a{
+        .ss{
+            color:gold ;
+        }
+
+        a {
             text-decoration: none;
         }
+
         button {
             background: none;
             color: whitesmoke;
@@ -500,9 +607,8 @@
                         </li>
                         <li><a><i class="fa fa-wrench fa-fw"></i><span class="publish">公告管理</span></a>
                             <ul class="nav nav-second-level collapse in admin thread">
-                                <li><a>删除公告</a></li>
-                                <li><a>添加公告</a></li>
-                                <li><a>修改公告</a></li>
+                                <li><a onclick="deleteNotice()">删除公告</a></li>
+                                <li><a href="noticeEdit.html">添加公告</a></li>
                             </ul>
                         </li>
                         <li><a><i class="fa fa-wrench fa-fw"></i><span class="info">个人信息管理</span></a>
@@ -538,7 +644,7 @@
 
                 <!--表单-->
                 <table class="mytable"
-                       style="color: white;font-family: 新宋体;font-size: 16px;margin-left:150px"
+                       style="color: white;font-family: 新宋体;font-size: 16px;margin-left:120px"
                        cellspacing="1" cellpadding="10">
 
 
