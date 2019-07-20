@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="This is my page">
+
+    <title>发布新闻</title>
+    <link rel="stylesheet" href="../editormd/examples/css/style.css"/>
+    <link rel="stylesheet" href="../editormd/css/editormd.css"/>
+    <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon"/>
+
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            padding: 0px;
+            background: url() 0 0 no-repeat;
+            background-size: cover;
+        }
+
+        .demo {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            /* background-color: #008855;*/
+        }
+
+        .demo-bg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 10;
+            width: 100%;
+            height: 671px;
+            /*filter:Alpha(opacity=50);*/
+            background-color: rgba(0, 0, 0, 0.4);
+            /*实现透明背景*/
+            display: none;
+        }
+
+        #button {
+            width: 130px;
+            height: 50px;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-color: brown;
+            margin: 20px 0 0 40px;
+            position: relative;
+            border: 1px solid grey;
+            font-size: 20px;
+            color: white;
+
+        }
+
+        .demo-txt {
+            position: relative;
+            z-index: 100;
+            color: grey;
+            background: white;
+            /* background-color: rosybrown;*/
+            width: 40%;
+            height: 350px;
+            margin: auto;
+            padding: auto;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            display: none;
+            border-radius: 5px;
+        }
+
+        #btn {
+            float: right;
+            font-size: 20px;
+            border: none;
+            font-family: "arial rounded mt bold";
+            background-color: white;
+            color: grey;
+        }
+
+        #btn2,
+        #btn3 {
+            width: 70px;
+            height: 35px;
+            background-color: darkred;
+            font-size: 20px;
+            color: white;
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            text-align: center;
+        }
+
+        #div1 {
+            text-align: right;
+        }
+
+        #demo-head {
+            width: 100%;
+            height: 40px;
+            border-bottom: 2px solid dimgrey;
+        }
+
+        #demo-body {
+            width: 95%;
+            height: 250px;
+            /*background-color: #0000FF;*/
+            margin: auto;
+            padding: auto;
+        }
+
+        .demo-bottom {
+            text-align: right;
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+
+        .classify {
+            width: 150px;
+            height: 30px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid grey;
+        }
+
+        .key {
+            width: 250px;
+            height: 30px;
+            border-radius: 5px;
+            outline: none;
+            border: 1px solid grey;
+        }
+
+        .tr1 {
+            height: 53px;
+        }
+
+        #content {
+            width: 100%;
+            height: 800px;
+            /*background-color: blue;*/
+        }
+
+        #head {
+            width: 100%;
+            height: 50px;
+            background-color: brown;
+        }
+
+        #body {
+            width: 100%;
+            height: 100%;
+            /*background-color: aquamarine;*/
+            margin-top: 10px;
+        }
+
+        #left {
+            width: 12%;
+            height: 450px;
+            background-color: firebrick;
+            float: left;
+            border: 2px solid gainsboro;
+        }
+
+        #right {
+            width: 86%;
+            height: 100%;
+            /*background-color: antiquewhite;*/
+            margin-left: 1%;
+            float: left;
+
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            /*background-color: #fff;*/
+            text-align: center;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        /* 鼠标移动到选项上修改背景颜色 */
+
+        li a:hover {
+            background-color: red;
+            color: white;
+        }
+
+        #d1 {
+            width: 100%;
+            height: 210px;
+            /*background-color: #808080;*/
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .inp {
+            width: 98%;
+            height: 50px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+
+        #layout {
+            margin-top: 0px;
+        }
+
+        #btn1 {
+            width: 80px;
+            height: 45px;
+            background-color: red;
+            font-size: 16px;
+            border-radius: 8px;
+            outline: none;
+            color: white;
+        }
+
+        #dd2 {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <script src="../editormd/examples/js/jquery.min.js"></script>
+    <script src="../editormd/editormd.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        var testEditor;
+
+        $(function () {
+            testEditor = editormd("test-editormd", {
+                width: "99%",
+                height: 500,
+                syncScrolling: "single",
+                path: "../editormd/lib/",
+                //imageUpload : true,
+                //imageFormats : ["jpg","jpeg","gif","png","bmp","webp"],
+                //imageUploadURL : "<%=basePath%>PicSvl",
+                saveHTMLToTextarea: true
+            });
+        });
+
+        function tijiao() {
+            var htmlco = $("#editormdhtml").val();
+            var htmTitle = $("#title").val();
+            var htmAuthor = $("#author").val();
+            var htmPublish = $("#publish").val();
+            alert(htmlco + "\n" + htmTitle + "\n" + htmAuthor + "\n" + htmPublish);
+            $.ajax({
+                data: {
+                    'text': htmlco,
+                    'title': htmTitle,
+                    'author': htmAuthor,
+                    'publish': htmPublish
+                },
+                success: function (data) {
+                    alert(data);
+                },
+                type: 'post',
+                url: 'http://localhost:8888/news/editor.do'
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+<div id="content">
+    <div id="head"></div>
+    <div id="body">
+        <div id="left">
+
+            <ul>
+                <li>
+                    <a href="manager.html">新闻管理</a>
+                </li>
+                <li>
+                    <a href="publish.html">发布新闻</a>
+                </li>
+                <li>
+                    <a href="classify.html">个人分类管理</a>
+                </li>
+            </ul>
+        </div>
+        <div id="right">
+
+            <div id="layout">
+                <form method="post">
+                    <div id="d1">
+                        <input type="text" placeholder="请输入标题" class="inp" name="title" id="title"/><br><br>
+                        <input type="text" placeholder="请输入作者" class="inp" name="author" id="author"/><br><br>
+                        <input type="text" placeholder="请输入出版社" class="inp" name="publish" id="publish">
+
+                    </div>
+
+                    <div id="dd2">
+                        <input type="button" value="提交" onclick="tijiao()" id="btn1"/>
+
+                        <!--修改处-->
+
+                    </div>
+
+                    <div id="test-editormd">
+                        <textarea style="display:none;" class="editormd-html-textarea" id="editormd"></textarea>
+                        <textarea class="editormd-html-textarea" name="text" id="editormdhtml"></textarea>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script>-->
+    //			var demobg = document.querySelector(".demo-bg");
+    //			var demotxt = document.querySelector(".demo-txt");
+    var demobg = document.getElementById("demobg12");
+    var demotxt = document.getElementById("demotxt12");
+
+    // alert(demobg);
+
+    <!--function openDialog() {-->
+        <!--demotxt.style.display = "block";-->
+        <!--demobg.style.display = "block";-->
+    <!--}-->
+
+    <!--function closeDialog() {-->
+        <!--demotxt.style.display = "none";-->
+        <!--demobg.style.display = "none";-->
+    <!--}-->
+
+    <!--function okfun() {-->
+        <!--var okbtn = document.getElementById("btn2");-->
+
+    <!--}-->
+
+    <!--function refun() {-->
+        <!--var rebtn = document.getElementById("btn3");-->
+        <!--demotxt.style.display = "none";-->
+        <!--demobg.style.display = "none";-->
+    <!--}
+  </script>-->
+</body>
+
+</html>
